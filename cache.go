@@ -41,8 +41,9 @@ func putCache(c echo.Context) error {
 	if _, exists := CacheMap[body.Key]; exists {
 		go utils.UpdateDLL(body.Key)
 	} else {
+		LRUCache.AddFrontNodeDLL(body.Key)
 		// worried about this, might be inefficient to unpack LRUCache
-		LRUCache = append([]string{body.Key}, LRUCache...)
+		// LRUCache = append([]string{body.Key}, LRUCache...)
 	}
 
 	// add value to cache (updating if needed)

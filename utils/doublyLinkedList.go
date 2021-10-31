@@ -9,24 +9,24 @@ func UpdateDLL(key string) {
 
 // Doubly Linked List Code Derived from
 //  https://golangbyexample.com/doubly-linked-list-golang/
-type node struct {
+type Node struct {
 	data string
-	prev *node
-	next *node
+	prev *Node
+	next *Node
 }
 
-type doublyLinkedList struct {
+type DoublyLinkedList struct {
 	len  int
-	tail *node
-	head *node
+	tail *Node
+	head *Node
 }
 
-func InitDoublyList() *doublyLinkedList {
-	return &doublyLinkedList{}
+func InitDoublyList() *DoublyLinkedList {
+	return &DoublyLinkedList{}
 }
 
-func (d *doublyLinkedList) AddFrontNodeDLL(data string) {
-	newNode := &node{
+func (d *DoublyLinkedList) AddFrontNodeDLL(data string) {
+	newNode := &Node{
 		data: data,
 	}
 	if d.head == nil {
@@ -41,8 +41,8 @@ func (d *doublyLinkedList) AddFrontNodeDLL(data string) {
 	return
 }
 
-func (d *doublyLinkedList) AddEndNodeDLL(data string) {
-	newNode := &node{
+func (d *DoublyLinkedList) AddEndNodeDLL(data string) {
+	newNode := &Node{
 		data: data,
 	}
 	if d.head == nil {
@@ -60,7 +60,7 @@ func (d *doublyLinkedList) AddEndNodeDLL(data string) {
 	d.len++
 	return
 }
-func (d *doublyLinkedList) TraverseForward() error {
+func (d *DoublyLinkedList) TraverseForward() error {
 	if d.head == nil {
 		return fmt.Errorf("TraverseError: List is empty")
 	}
@@ -73,7 +73,7 @@ func (d *doublyLinkedList) TraverseForward() error {
 	return nil
 }
 
-func (d *doublyLinkedList) TraverseReverse() error {
+func (d *DoublyLinkedList) TraverseReverse() error {
 	if d.head == nil {
 		return fmt.Errorf("TraverseError: List is empty")
 	}
@@ -86,7 +86,7 @@ func (d *doublyLinkedList) TraverseReverse() error {
 	return nil
 }
 
-func (d *doublyLinkedList) Size() int {
+func (d *DoublyLinkedList) Size() int {
 	return d.len
 }
 

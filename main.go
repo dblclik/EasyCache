@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/dblclik/EasyCache/utils"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -8,7 +9,7 @@ import (
 const CacheLimit int = 100
 
 // TODO: Need to switch to doubly linked list
-var LRUCache []string
+var LRUCache *utils.DoublyLinkedList = utils.InitDoublyList()
 
 var CacheMap = map[string]string{}
 
