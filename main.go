@@ -12,6 +12,16 @@ var LRUCache []string
 
 var CacheMap = map[string]string{}
 
+/* TODO:
+- Implement DLL + Updating
+- Add tests for existing functions
+- Consider adding auth module
+- Add env file for config variables
+- Add Config Vars to HEALTH
+- Enable resource updates on CONFIG vars (that can be changed)
+- Start time tracking for all actions + logging these
+*/
+
 func main() {
 	// Echo instance
 	e := echo.New()
@@ -27,6 +37,7 @@ func main() {
 	// Get Cache Value
 	e.GET("/cache", getCache)
 
+	// Put  (key, value) into cache
 	e.POST("/cache", putCache)
 
 	// Start server
