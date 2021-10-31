@@ -2,11 +2,6 @@ package utils
 
 import "fmt"
 
-// Update the DLL by moving a known existing key to the HEAD
-func UpdateDLL(key string) {
-
-}
-
 // Doubly Linked List Code Derived from
 //  https://golangbyexample.com/doubly-linked-list-golang/
 type Node struct {
@@ -23,6 +18,12 @@ type DoublyLinkedList struct {
 
 func InitDoublyList() *DoublyLinkedList {
 	return &DoublyLinkedList{}
+}
+
+// Update the DLL by moving a known existing key to the HEAD
+func (d *DoublyLinkedList) UpdateDLL(key string) error {
+
+	return nil
 }
 
 func (d *DoublyLinkedList) AddFrontNodeDLL(data string) {
@@ -60,6 +61,41 @@ func (d *DoublyLinkedList) AddEndNodeDLL(data string) {
 	d.len++
 	return
 }
+
+// Update the DLL by removing the current HEAD
+func (d *DoublyLinkedList) RemoveHeadDLL() error {
+	if d.head == nil {
+		return fmt.Errorf("RemoveHeadError: List is empty")
+	}
+
+	return nil
+}
+
+// Update the DLL by removing the current TAIL
+func (d *DoublyLinkedList) RemoveTailDLL() error {
+	if d.tail == nil {
+		return fmt.Errorf("RemoveTrailError: There is no TAIL node")
+	}
+
+	// Show current tail
+	fmt.Printf("value = %v, prev = %v, next = %v\n", d.tail.data, d.tail.prev, d.tail.next)
+
+	temp := d.tail
+
+	d.tail.prev.next = nil
+	d.tail = d.tail.prev
+
+	// nil out prev tail to line up for GC (move to WHITE Zone)
+	temp.prev = nil
+	temp.next = nil
+	temp.data = ""
+
+	// Show current tail after updates
+	fmt.Printf("value = %v, prev = %v, next = %v\n", d.tail.data, d.tail.prev, d.tail.next)
+
+	return nil
+}
+
 func (d *DoublyLinkedList) TraverseForward() error {
 	if d.head == nil {
 		return fmt.Errorf("TraverseError: List is empty")
