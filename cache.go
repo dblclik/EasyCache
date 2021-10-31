@@ -36,9 +36,16 @@ func putCache(c echo.Context) error {
 		return err
 	}
 
-	CacheMap[body.Key] = body.Value
+	// if entry is new, prepend to head of LRUCache, else move item to front
+	if val, exists := CacheMap[body.Key]; exists {
+
+	} else {
+		// worried about this, might be inefficient to unpack LRUCache
+		LRUCache = append([]string{body.Key}, LRUCache...)
+	}
+
 	if len(CacheMap) > CacheLimit {
-		evict()
+		go evict()
 	}
 	r := &models.CacheLoadConfirmation{
 		Key:       body.Key,
