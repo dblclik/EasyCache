@@ -7,6 +7,7 @@ import (
 
 const CacheLimit int = 100
 
+// TODO: Need to switch to doubly linked list
 var LRUCache []string
 
 var CacheMap = map[string]string{}

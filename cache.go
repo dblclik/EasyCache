@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/dblclik/EasyCache/models"
+	"github.com/dblclik/EasyCache/utils"
 	"github.com/labstack/echo/v4"
 )
 
@@ -37,12 +38,15 @@ func putCache(c echo.Context) error {
 	}
 
 	// if entry is new, prepend to head of LRUCache, else move item to front
-	if val, exists := CacheMap[body.Key]; exists {
-
+	if _, exists := CacheMap[body.Key]; exists {
+		go utils.UpdateDLL(body.Key)
 	} else {
 		// worried about this, might be inefficient to unpack LRUCache
 		LRUCache = append([]string{body.Key}, LRUCache...)
 	}
+
+	// add value to cache (updating if needed)
+	CacheMap[body.Key] = body.Value
 
 	if len(CacheMap) > CacheLimit {
 		go evict()
