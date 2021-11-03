@@ -68,13 +68,35 @@ func (d *DoublyLinkedList) RemoveHeadDLL() error {
 		return fmt.Errorf("RemoveHeadError: List is empty")
 	}
 
+	if d.tail == d.head {
+		d.tail = nil
+		d.head = nil
+	} else {
+		// Show current head
+		fmt.Printf("value = %v, prev = %v, next = %v\n", d.head.data, d.head.prev, d.head.next)
+
+		temp := d.head
+
+		d.head.next.prev = nil
+		d.head = d.head.next
+
+		// nil out prev head to line up for GC (move to WHITE Zone)
+		temp.prev = nil
+		temp.next = nil
+		temp.data = ""
+
+		// Show current tail after updates
+		fmt.Printf("value = %v, prev = %v, next = %v\n", d.head.data, d.head.prev, d.head.next)
+	}
+
+	d.len--
 	return nil
 }
 
 // Update the DLL by removing the current TAIL
 func (d *DoublyLinkedList) RemoveTailDLL() error {
 	if d.tail == nil {
-		return fmt.Errorf("RemoveTrailError: There is no TAIL node")
+		return fmt.Errorf("RemoveTailError: There is no TAIL node")
 	}
 
 	if d.tail == d.head {

@@ -51,3 +51,29 @@ func TestRemoveTailNodeSingle(t *testing.T) {
 		t.Fatalf(`After adding TestNode1 then removing tail, expected TestDLL.tail to be nil, instead TestDLL.tail.data = %v`, TestDLL.tail.data)
 	}
 }
+
+func TestRemoveHeadNode(t *testing.T) {
+	var TestDLL *DoublyLinkedList = InitDoublyList()
+	nodeData1 := "TestNode1"
+	nodeData2 := "TestNode2"
+
+	// Add node with `data := "TestNode"`
+	TestDLL.AddFrontNodeDLL(nodeData1)
+	TestDLL.AddFrontNodeDLL(nodeData2)
+	err := TestDLL.RemoveHeadDLL()
+	if err != nil || nodeData1 != TestDLL.head.data {
+		t.Fatalf(`After adding TestNode1 then TestNode2 then removing head, expected TestDLL.head.data = %q, instead TestDLL.head.data = %v`, nodeData1, TestDLL.head.data)
+	}
+}
+
+func TestRemoveHeadNodeSingle(t *testing.T) {
+	var TestDLL *DoublyLinkedList = InitDoublyList()
+	nodeData1 := "TestNode1"
+
+	// Add node with `data := "TestNode"`
+	TestDLL.AddFrontNodeDLL(nodeData1)
+	err := TestDLL.RemoveHeadDLL()
+	if err != nil || nil != TestDLL.head {
+		t.Fatalf(`After adding TestNode1 then removing head, expected TestDLL.head to be nil, instead TestDLL.head.data = %v`, TestDLL.head.data)
+	}
+}
