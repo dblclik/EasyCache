@@ -77,21 +77,27 @@ func (d *DoublyLinkedList) RemoveTailDLL() error {
 		return fmt.Errorf("RemoveTrailError: There is no TAIL node")
 	}
 
-	// Show current tail
-	fmt.Printf("value = %v, prev = %v, next = %v\n", d.tail.data, d.tail.prev, d.tail.next)
+	if d.tail == d.head {
+		d.tail = nil
+		d.head = nil
+	} else {
+		// Show current tail
+		fmt.Printf("value = %v, prev = %v, next = %v\n", d.tail.data, d.tail.prev, d.tail.next)
 
-	temp := d.tail
+		temp := d.tail
 
-	d.tail.prev.next = nil
-	d.tail = d.tail.prev
+		d.tail.prev.next = nil
+		d.tail = d.tail.prev
 
-	// nil out prev tail to line up for GC (move to WHITE Zone)
-	temp.prev = nil
-	temp.next = nil
-	temp.data = ""
+		// nil out prev tail to line up for GC (move to WHITE Zone)
+		temp.prev = nil
+		temp.next = nil
+		temp.data = ""
 
-	// Show current tail after updates
-	fmt.Printf("value = %v, prev = %v, next = %v\n", d.tail.data, d.tail.prev, d.tail.next)
+		// Show current tail after updates
+		fmt.Printf("value = %v, prev = %v, next = %v\n", d.tail.data, d.tail.prev, d.tail.next)
+	}
+	d.len--
 
 	return nil
 }
