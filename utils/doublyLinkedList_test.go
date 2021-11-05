@@ -77,3 +77,31 @@ func TestRemoveHeadNodeSingle(t *testing.T) {
 		t.Fatalf(`After adding TestNode1 then removing head, expected TestDLL.head to be nil, instead TestDLL.head.data = %v`, TestDLL.head.data)
 	}
 }
+
+func TestSearchSuccess(t *testing.T) {
+	var TestDLL *DoublyLinkedList = InitDoublyList()
+	nodeData1 := "TestNode1"
+	nodeData2 := "TestNode2"
+
+	// Add node with `data := "TestNode"`
+	TestDLL.AddFrontNodeDLL(nodeData1)
+	TestDLL.AddFrontNodeDLL(nodeData2)
+	nodePtr, err := TestDLL.SearchDLL(nodeData1)
+	if err != nil || nodeData1 != nodePtr.data {
+		t.Fatal("Unable to find node with data key 'TestNode1'")
+	}
+}
+
+func TestSearchFail(t *testing.T) {
+	var TestDLL *DoublyLinkedList = InitDoublyList()
+	nodeData1 := "TestNode1"
+	nodeData2 := "TestNode2"
+
+	// Add node with `data := "TestNode"`
+	TestDLL.AddFrontNodeDLL(nodeData1)
+	TestDLL.AddFrontNodeDLL(nodeData2)
+	nodePtr, err := TestDLL.SearchDLL("TestNode123")
+	if err == nil || nodePtr != nil {
+		t.Fatal("Unexpectedly found a node with data key 'TestNode123'")
+	}
+}

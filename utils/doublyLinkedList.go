@@ -26,6 +26,21 @@ func (d *DoublyLinkedList) UpdateDLL(key string) error {
 	return nil
 }
 
+func (d *DoublyLinkedList) SearchDLL(key string) (*Node, error) {
+	if d.head == nil {
+		return nil, fmt.Errorf("SearchError: List is empty")
+	}
+	temp := d.head
+	for temp != nil {
+		if temp.data == key {
+			return temp, nil
+		}
+		temp = temp.next
+	}
+
+	return nil, fmt.Errorf("SearchError: key does not exist")
+}
+
 func (d *DoublyLinkedList) AddFrontNodeDLL(data string) {
 	newNode := &Node{
 		data: data,
