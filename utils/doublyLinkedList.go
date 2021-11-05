@@ -27,9 +27,21 @@ func (d *DoublyLinkedList) UpdateDLL(key string) error {
 		return fmt.Errorf("UpdateError: Could not find node with provided key")
 	}
 
+	if nodeToMove == d.head {
+		return nil
+	}
+
 	// First, connect the link that will happen after nodeToMove is moved
-	nodeToMove.prev.next = nodeToMove.next
-	nodeToMove.next.prev = nodeToMove.prev
+	if nodeToMove.prev != nil {
+		nodeToMove.prev.next = nodeToMove.next
+	} else {
+		// nodeToMove is HEAD, should have been caught
+		fmt.Println("Had a case when nodeToMove is HEAD but didn't get caught")
+	}
+
+	if nodeToMove.next != nil {
+		nodeToMove.next.prev = nodeToMove.prev
+	}
 
 	// Now move nodeToMove to the HEAD
 	nodeToMove.prev = nil

@@ -105,3 +105,17 @@ func TestSearchFail(t *testing.T) {
 		t.Fatal("Unexpectedly found a node with data key 'TestNode123'")
 	}
 }
+
+func TestUpdateDLL(t *testing.T) {
+	var TestDLL *DoublyLinkedList = InitDoublyList()
+	nodeData1 := "TestNode1"
+	nodeData2 := "TestNode2"
+
+	// Add node with `data := "TestNode"`
+	TestDLL.AddFrontNodeDLL(nodeData1)
+	TestDLL.AddFrontNodeDLL(nodeData2)
+	err := TestDLL.UpdateDLL(nodeData1)
+	if err != nil || TestDLL.head.data != nodeData1 {
+		t.Fatalf("After UpdateDLL, expected HEAD data to be: %q; actual HEAD data is: %v", nodeData1, TestDLL.head.data)
+	}
+}
