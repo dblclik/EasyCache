@@ -22,6 +22,19 @@ func InitDoublyList() *DoublyLinkedList {
 
 // Update the DLL by moving a known existing key to the HEAD
 func (d *DoublyLinkedList) UpdateDLL(key string) error {
+	nodeToMove, err := d.SearchDLL(key)
+	if err != nil {
+		return fmt.Errorf("UpdateError: Could not find node with provided key")
+	}
+
+	// First, connect the link that will happen after nodeToMove is moved
+	nodeToMove.prev.next = nodeToMove.next
+	nodeToMove.next.prev = nodeToMove.prev
+
+	// Now move nodeToMove to the HEAD
+	nodeToMove.prev = nil
+	nodeToMove.next = d.head
+	d.head = nodeToMove
 
 	return nil
 }
