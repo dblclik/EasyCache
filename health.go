@@ -13,7 +13,7 @@ import (
 func health(c echo.Context) error {
 	h := &models.Health{
 		Status:     "okay",
-		CacheDepth: Len(CacheMap),
+		CacheDepth: len(CacheMap),
 		CacheSize:  unsafe.Sizeof(CacheMap),
 		Timestamp:  time.Now().Format("20060102150405"),
 	}
