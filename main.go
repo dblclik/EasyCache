@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-const CacheLimit int = 5
+const CacheLimit int = 100
 
 // TODO: Need to switch to doubly linked list
 var LRUCache *utils.DoublyLinkedList = utils.InitDoublyList()
