@@ -37,7 +37,7 @@ func putCache(c echo.Context) error {
 		return err
 	}
 
-	// if entry is new, prepend to head of LRUCache, else move item to front
+	// if entry is new, prepend to Head of LRUCache, else move item to front
 	if _, exists := CacheMap[body.Key]; exists {
 		err := LRUCache.UpdateDLL(body.Key)
 		fmt.Println(err)

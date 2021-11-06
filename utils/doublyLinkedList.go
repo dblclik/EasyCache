@@ -5,15 +5,15 @@ import "fmt"
 // Doubly Linked List Code Derived from
 //  https://golangbyexample.com/doubly-linked-list-golang/
 type Node struct {
-	data string
-	prev *Node
-	next *Node
+	Data string
+	Prev *Node
+	Next *Node
 }
 
 type DoublyLinkedList struct {
-	len  int
-	tail *Node
-	head *Node
+	Len  int
+	Tail *Node
+	Head *Node
 }
 
 func InitDoublyList() *DoublyLinkedList {
@@ -27,171 +27,171 @@ func (d *DoublyLinkedList) UpdateDLL(key string) error {
 		return fmt.Errorf("UpdateError: Could not find node with provided key")
 	}
 
-	if nodeToMove == d.head {
+	if nodeToMove == d.Head {
 		return nil
 	}
 
 	// First, connect the link that will happen after nodeToMove is moved
-	if nodeToMove.prev != nil {
-		nodeToMove.prev.next = nodeToMove.next
+	if nodeToMove.Prev != nil {
+		nodeToMove.Prev.Next = nodeToMove.Next
 	} else {
 		// nodeToMove is HEAD, should have been caught
 		fmt.Println("Had a case when nodeToMove is HEAD but didn't get caught")
 	}
 
-	if nodeToMove.next != nil {
-		nodeToMove.next.prev = nodeToMove.prev
+	if nodeToMove.Next != nil {
+		nodeToMove.Next.Prev = nodeToMove.Prev
 	}
 
 	// Now move nodeToMove to the HEAD
-	nodeToMove.prev = nil
-	nodeToMove.next = d.head
-	d.head = nodeToMove
+	nodeToMove.Prev = nil
+	nodeToMove.Next = d.Head
+	d.Head = nodeToMove
 
 	return nil
 }
 
 func (d *DoublyLinkedList) SearchDLL(key string) (*Node, error) {
-	if d.head == nil {
+	if d.Head == nil {
 		return nil, fmt.Errorf("SearchError: List is empty")
 	}
-	temp := d.head
+	temp := d.Head
 	for temp != nil {
-		if temp.data == key {
+		if temp.Data == key {
 			return temp, nil
 		}
-		temp = temp.next
+		temp = temp.Next
 	}
 
 	return nil, fmt.Errorf("SearchError: key does not exist")
 }
 
-func (d *DoublyLinkedList) AddFrontNodeDLL(data string) {
+func (d *DoublyLinkedList) AddFrontNodeDLL(Data string) {
 	newNode := &Node{
-		data: data,
+		Data: Data,
 	}
-	if d.head == nil {
-		d.head = newNode
-		d.tail = newNode
+	if d.Head == nil {
+		d.Head = newNode
+		d.Tail = newNode
 	} else {
-		newNode.next = d.head
-		d.head.prev = newNode
-		d.head = newNode
+		newNode.Next = d.Head
+		d.Head.Prev = newNode
+		d.Head = newNode
 	}
-	d.len++
+	d.Len++
 	return
 }
 
-func (d *DoublyLinkedList) AddEndNodeDLL(data string) {
+func (d *DoublyLinkedList) AddEndNodeDLL(Data string) {
 	newNode := &Node{
-		data: data,
+		Data: Data,
 	}
-	if d.head == nil {
-		d.head = newNode
-		d.tail = newNode
+	if d.Head == nil {
+		d.Head = newNode
+		d.Tail = newNode
 	} else {
-		currentNode := d.head
-		for currentNode.next != nil {
-			currentNode = currentNode.next
+		currentNode := d.Head
+		for currentNode.Next != nil {
+			currentNode = currentNode.Next
 		}
-		newNode.prev = currentNode
-		currentNode.next = newNode
-		d.tail = newNode
+		newNode.Prev = currentNode
+		currentNode.Next = newNode
+		d.Tail = newNode
 	}
-	d.len++
+	d.Len++
 	return
 }
 
 // Update the DLL by removing the current HEAD
 func (d *DoublyLinkedList) RemoveHeadDLL() error {
-	if d.head == nil {
+	if d.Head == nil {
 		return fmt.Errorf("RemoveHeadError: List is empty")
 	}
 
-	if d.tail == d.head {
-		d.tail = nil
-		d.head = nil
+	if d.Tail == d.Head {
+		d.Tail = nil
+		d.Head = nil
 	} else {
-		// Show current head
-		fmt.Printf("value = %v, prev = %v, next = %v\n", d.head.data, d.head.prev, d.head.next)
+		// Show current Head
+		fmt.Printf("value = %v, Prev = %v, Next = %v\n", d.Head.Data, d.Head.Prev, d.Head.Next)
 
-		temp := d.head
+		temp := d.Head
 
-		d.head.next.prev = nil
-		d.head = d.head.next
+		d.Head.Next.Prev = nil
+		d.Head = d.Head.Next
 
-		// nil out prev head to line up for GC (move to WHITE Zone)
-		temp.prev = nil
-		temp.next = nil
-		temp.data = ""
+		// nil out Prev Head to line up for GC (move to WHITE Zone)
+		temp.Prev = nil
+		temp.Next = nil
+		temp.Data = ""
 
-		// Show current tail after updates
-		fmt.Printf("value = %v, prev = %v, next = %v\n", d.head.data, d.head.prev, d.head.next)
+		// Show current Tail after updates
+		fmt.Printf("value = %v, Prev = %v, Next = %v\n", d.Head.Data, d.Head.Prev, d.Head.Next)
 	}
 
-	d.len--
+	d.Len--
 	return nil
 }
 
 // Update the DLL by removing the current TAIL
 func (d *DoublyLinkedList) RemoveTailDLL() error {
-	if d.tail == nil {
+	if d.Tail == nil {
 		return fmt.Errorf("RemoveTailError: There is no TAIL node")
 	}
 
-	if d.tail == d.head {
-		d.tail = nil
-		d.head = nil
+	if d.Tail == d.Head {
+		d.Tail = nil
+		d.Head = nil
 	} else {
-		// Show current tail
-		fmt.Printf("value = %v, prev = %v, next = %v\n", d.tail.data, d.tail.prev, d.tail.next)
+		// Show current Tail
+		fmt.Printf("value = %v, Prev = %v, Next = %v\n", d.Tail.Data, d.Tail.Prev, d.Tail.Next)
 
-		temp := d.tail
+		temp := d.Tail
 
-		d.tail.prev.next = nil
-		d.tail = d.tail.prev
+		d.Tail.Prev.Next = nil
+		d.Tail = d.Tail.Prev
 
-		// nil out prev tail to line up for GC (move to WHITE Zone)
-		temp.prev = nil
-		temp.next = nil
-		temp.data = ""
+		// nil out Prev Tail to line up for GC (move to WHITE Zone)
+		temp.Prev = nil
+		temp.Next = nil
+		temp.Data = ""
 
-		// Show current tail after updates
-		fmt.Printf("value = %v, prev = %v, next = %v\n", d.tail.data, d.tail.prev, d.tail.next)
+		// Show current Tail after updates
+		fmt.Printf("value = %v, Prev = %v, Next = %v\n", d.Tail.Data, d.Tail.Prev, d.Tail.Next)
 	}
-	d.len--
+	d.Len--
 
 	return nil
 }
 
 func (d *DoublyLinkedList) TraverseForward() error {
-	if d.head == nil {
+	if d.Head == nil {
 		return fmt.Errorf("TraverseError: List is empty")
 	}
-	temp := d.head
+	temp := d.Head
 	for temp != nil {
-		fmt.Printf("value = %v, prev = %v, next = %v\n", temp.data, temp.prev, temp.next)
-		temp = temp.next
+		fmt.Printf("value = %v, Prev = %v, Next = %v\n", temp.Data, temp.Prev, temp.Next)
+		temp = temp.Next
 	}
 	fmt.Println()
 	return nil
 }
 
 func (d *DoublyLinkedList) TraverseReverse() error {
-	if d.head == nil {
+	if d.Head == nil {
 		return fmt.Errorf("TraverseError: List is empty")
 	}
-	temp := d.tail
+	temp := d.Tail
 	for temp != nil {
-		fmt.Printf("value = %v, prev = %v, next = %v\n", temp.data, temp.prev, temp.next)
-		temp = temp.prev
+		fmt.Printf("value = %v, Prev = %v, Next = %v\n", temp.Data, temp.Prev, temp.Next)
+		temp = temp.Prev
 	}
 	fmt.Println()
 	return nil
 }
 
 func (d *DoublyLinkedList) Size() int {
-	return d.len
+	return d.Len
 }
 
 // func main() {
