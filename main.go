@@ -1,12 +1,18 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/dblclik/EasyCache/utils"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-const CacheLimit int = 100
+var CacheLimit int
+
+const DefaultCacheLimit int = 10
 
 // TODO: Need to switch to doubly linked list
 var LRUCache *utils.DoublyLinkedList = utils.InitDoublyList()
@@ -24,6 +30,13 @@ var CacheMap = map[string]string{}
 */
 
 func main() {
+	godotenv.Load()
+	CacheLimit, err := fmt.Sscan(os.Getenv("CACHE_SIZE_LIMIT"))
+	if err != nil {
+		fmt.Println("WARNING: Could not set CacheLimit with env variable, using DEFAULT")
+		CacheLimit = DefaultCacheLimit
+	}
+	fmt.Println("Cache Limit set to: ", CacheLimit)
 	// Echo instance
 	e := echo.New()
 

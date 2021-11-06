@@ -1,10 +1,11 @@
 package models
 
 type Health struct {
-	Status     string  `json:"status" xml:"status"`
-	CacheDepth int     `json:"cacheDepth" xml:"cacheDepth"`
-	CacheSize  uintptr `json:"cacheSize" xml:"cacheSize"`
-	Timestamp  string  `json:"timestamp" xml:"timestamp"`
+	Status         string  `json:"status" xml:"status"`
+	CacheDepth     int     `json:"cacheDepth" xml:"cacheDepth"`
+	CacheSize      uintptr `json:"cacheSize" xml:"cacheSize"`
+	CacheItemLimit int     `json:"cacheItemLimite" xml:"cacheItemLimit"`
+	Timestamp      string  `json:"timestamp" xml:"timestamp"`
 }
 
 type CacheResponse struct {
