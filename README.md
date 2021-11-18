@@ -8,10 +8,10 @@ _caching made easy_
 4. Test routes (/health, GET /cache, POST /cache)
 
 ## TODO List
-- Implement DLL + Updating
-- Add tests for existing functions
+- ~~Implement DLL + Updating~~
+- ~~Add tests for existing functions~~
 - Consider adding auth module
-- Add env file for config variables
-- Add Config Vars to HEALTH
+- ~~Add env file for config variables~~
+- ~~Add Config Vars to HEALTH~~
 - Enable resource updates on CONFIG vars (that can be changed)
 - Start time tracking for all actions + logging these

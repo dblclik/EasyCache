@@ -12,6 +12,7 @@ import (
 // Health Check Handler
 func health(c echo.Context) error {
 	h := &models.Health{
+		InstanceId:     InstanceID,
 		Status:         "okay",
 		CacheDepth:     len(CacheMap),
 		CacheSize:      unsafe.Sizeof(CacheMap),

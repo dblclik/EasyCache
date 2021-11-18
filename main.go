@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	_rand "math/rand"
 	"os"
 	"strconv"
 
@@ -17,6 +18,7 @@ var (
 	CacheLimit int                     = DefaultCacheLimit
 	LRUCache   *utils.DoublyLinkedList = utils.InitDoublyList()
 	CacheMap                           = map[string]string{}
+	InstanceID uint32                  = _rand.Uint32()
 )
 
 /* TODO:
@@ -45,6 +47,8 @@ func goDotEnvVariable(key string) string {
 }
 
 func main() {
+
+	// Initialize Cache Limit
 	log.Println("Initial Cache Limit set to: ", CacheLimit)
 	godotenv.Load()
 	CacheLimit, err := strconv.Atoi(goDotEnvVariable("CACHE_SIZE_LIMIT"))

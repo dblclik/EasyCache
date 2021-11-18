@@ -1,10 +1,11 @@
 package models
 
 type Health struct {
+	InstanceId     uint32  `json:"_id" xml:"_id"`
 	Status         string  `json:"status" xml:"status"`
 	CacheDepth     int     `json:"cacheDepth" xml:"cacheDepth"`
 	CacheSize      uintptr `json:"cacheSize" xml:"cacheSize"`
-	CacheItemLimit int     `json:"cacheItemLimite" xml:"cacheItemLimit"`
+	CacheItemLimit int     `json:"cacheItemLimit" xml:"cacheItemLimit"`
 	Timestamp      string  `json:"timestamp" xml:"timestamp"`
 }
 
