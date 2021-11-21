@@ -9,6 +9,12 @@ type Health struct {
 	Timestamp      string  `json:"timestamp" xml:"timestamp"`
 }
 
+type HashResponse struct {
+	InstanceId uint32 `json:"_id" xml:"_id"`
+	Status     string `json:"status" xml:"status"`
+	Timestamp  string `json:"timestamp" xml:"timestamp"`
+}
+
 type CacheResponse struct {
 	Exists    bool   `json:"exists" xml:"exists"`
 	Key       string `json:"key" xml:"key"`

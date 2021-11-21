@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/dblclik/EasyCache/models"
 	"github.com/dblclik/EasyCache/utils"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -15,10 +16,11 @@ import (
 const DefaultCacheLimit int = 10
 
 var (
-	CacheLimit int                     = DefaultCacheLimit
-	LRUCache   *utils.DoublyLinkedList = utils.InitDoublyList()
-	CacheMap                           = map[string]string{}
-	InstanceID uint32                  = _rand.Uint32()
+	CacheLimit     int                     = DefaultCacheLimit
+	LRUCache       *utils.DoublyLinkedList = utils.InitDoublyList()
+	CacheMap                               = map[string]string{}
+	InstanceID     uint32                  = _rand.Uint32()
+	HashCheckinURL string
 )
 
 /* TODO:
@@ -32,21 +34,41 @@ var (
 */
 
 // use godot package to load/read the .env file and
-// return the value of the key
-func goDotEnvVariable(key string) string {
-
+func initDotEnv(envFile string) bool {
 	// load .env file
-	err := godotenv.Load(".env")
+	err := godotenv.Load(envFile)
 
 	if err != nil {
 		log.Fatalf("Error loading .env file")
+		return false
 	}
 
+	return true
+}
+
+// return the value of the key
+func goDotEnvVariable(key string) string {
 	log.Println(os.Getenv(key))
 	return os.Getenv(key)
 }
 
 func main() {
+	// initialize the env file
+	envLoaded := initDotEnv(".env")
+
+	if !envLoaded {
+		panic("env file could not be loaded; panicking!")
+	}
+
+	// before coming online, cache node needs to check in
+	// ** IF CHECKIN_HOST ENV IS "" THEN WILL NOT CHECK **
+	HashCheckinURL = goDotEnvVariable("CHECKIN_HOST")
+
+	if HashCheckinURL != "" {
+		// initiate BLOCKING checkin against CHECKIN_HOST
+		var checkinResponse models.HashResponse
+		checkinOK := checkinToHashRing(HashCheckinURL, &checkinResponse)
+	}
 
 	// Initialize Cache Limit
 	log.Println("Initial Cache Limit set to: ", CacheLimit)
