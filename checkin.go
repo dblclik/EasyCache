@@ -4,18 +4,14 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
 const maxRetries = 4
 
-var (
-	backoffTime int
-	timesTried  int
-)
-
 func httpCheckin(checkinURL string) (ok bool, err error) {
-	parameterizedCheckinURL := checkinURL + "/checkin?instance=" + string(rune(InstanceID))
+	parameterizedCheckinURL := checkinURL + "?instance=" + strconv.Itoa(int(InstanceID))
 	log.Println("Going to make request to URL: ", parameterizedCheckinURL)
 	req, err := http.Get(parameterizedCheckinURL)
 	if err != nil {
@@ -35,8 +31,8 @@ func httpCheckin(checkinURL string) (ok bool, err error) {
 }
 
 func checkinToHashRing(checkinURL string) bool {
-	backoffTime = 2
-	timesTried = 0
+	backoffTime := 2
+	timesTried := 0
 
 	for {
 		if timesTried > maxRetries {
