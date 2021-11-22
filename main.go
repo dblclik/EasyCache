@@ -6,7 +6,6 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/dblclik/EasyCache/models"
 	"github.com/dblclik/EasyCache/utils"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -66,8 +65,10 @@ func main() {
 
 	if HashCheckinURL != "" {
 		// initiate BLOCKING checkin against CHECKIN_HOST
-		var checkinResponse models.HashResponse
-		checkinOK := checkinToHashRing(HashCheckinURL, &checkinResponse)
+		checkinOK := checkinToHashRing(HashCheckinURL)
+		if !checkinOK {
+			log.Fatalln("ERROR: Was not able to perform checkin, aborting now!")
+		}
 	}
 
 	// Initialize Cache Limit

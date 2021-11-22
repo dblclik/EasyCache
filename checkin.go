@@ -2,13 +2,9 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"log"
 	"net/http"
-	"net/url"
 	"time"
-
-	"github.com/dblclik/EasyCache/models"
 )
 
 const maxRetries = 4
@@ -18,22 +14,27 @@ var (
 	timesTried  int
 )
 
-func httpCheckin(checkinURL string) (body string, err error) {
-	requestBody := url.Values{}
-	requestBody.Add("instance", string(InstanceID))
-	resp, err := http.PostForm(checkinURL, requestBody)
+func httpCheckin(checkinURL string) (ok bool, err error) {
+	parameterizedCheckinURL := checkinURL + "/checkin?instance=" + string(rune(InstanceID))
+	log.Println("Going to make request to URL: ", parameterizedCheckinURL)
+	req, err := http.Get(parameterizedCheckinURL)
 	if err != nil {
-		return "", fmt.Errorf("CheckinError: Could not checkin to Hash Service")
+		log.Println("Error building Request to checkinURL: ", checkinURL)
+		return false, fmt.Errorf("CheckinError: Could not reach the checkin URL")
 	}
-	defer resp.Body.Close()
-	body, err = io.ReadAll(resp.Body)
-	if err != nil {
-		return "", fmt.Errorf("CheckinError: Could not read response from Hash Service")
+
+	// defer request close
+	defer req.Body.Close()
+
+	if req.StatusCode == http.StatusOK {
+		log.Println("Successfully Checked In!")
+		return true, nil
 	}
-	return body, nil
+
+	return false, fmt.Errorf("Expected 200 response code from checkin, got: " + req.Status)
 }
 
-func checkinToHashRing(checkinURL string, checkinResponse *models.HashResponse) bool {
+func checkinToHashRing(checkinURL string) bool {
 	backoffTime = 2
 	timesTried = 0
 
@@ -41,14 +42,18 @@ func checkinToHashRing(checkinURL string, checkinResponse *models.HashResponse) 
 		if timesTried > maxRetries {
 			break
 		}
-		responseBody, err := httpCheckin(checkinURL)
+		checkinOK, err := httpCheckin(checkinURL)
 		if err != nil {
-			log.Println("Response from Checkin Service Was: ", responseBody)
+			log.Println("ERROR: httpCheckin returned: ", checkinOK)
 			time.Sleep(time.Duration(backoffTime) * time.Second)
 			timesTried++
 			backoffTime *= 2
 		}
 
+		// If we successfully checked in, return true
+		if checkinOK {
+			return true
+		}
 	}
 
 	return false
