@@ -15,7 +15,7 @@ import (
 const DefaultCacheLimit int = 10
 
 var (
-	CacheLimit     int                     = DefaultCacheLimit
+	CacheLimit     int
 	LRUCache       *utils.DoublyLinkedList = utils.InitDoublyList()
 	CacheMap                               = map[string]string{}
 	InstanceID     uint32                  = _rand.Uint32()
@@ -69,12 +69,15 @@ func main() {
 		if !checkinOK {
 			log.Fatalln("ERROR: Was not able to perform checkin, aborting now!")
 		}
+	} else {
+		log.Println("No checkin host provided, will not assume distributed")
 	}
 
 	// Initialize Cache Limit
 	log.Println("Initial Cache Limit set to: ", CacheLimit)
 	godotenv.Load()
-	CacheLimit, err := strconv.Atoi(goDotEnvVariable("CACHE_SIZE_LIMIT"))
+	var err error
+	CacheLimit, err = strconv.Atoi(goDotEnvVariable("CACHE_SIZE_LIMIT"))
 	log.Println("Cache Limit set to: ", CacheLimit)
 	if err != nil {
 		log.Println("WARNING: Could not set CacheLimit with env variable, using DEFAULT")
